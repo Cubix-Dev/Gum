@@ -1,13 +1,26 @@
 {
   "name": "gum",
   "version": "1.0.0",
-  "description": "A programming language made to resemble Scratch, but in text!",
-  "main": "gum.js",
-  "repository": "https://github.com/cube-enix/gum",
-  "author": "<72631767+BlueFalconHD@users.noreply.github.com>",
-  "license": "MIT",
+  "description": "",
+  "main": "index.js",
   "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clibuild": "yarn tsc || node ./dist/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cube-Enix/Gum.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cube-Enix/Gum/issues"
+  },
+  "homepage": "https://github.com/Cube-Enix/Gum#readme",
   "dependencies": {
-    "meow": "^11.0.0"
+    "inquirer": "^9.1.4",
+    "yarn": "^1.22.19"
   }
 }
