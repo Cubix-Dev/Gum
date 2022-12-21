@@ -9,7 +9,7 @@ add Serve from *
 
 -- @ defines built-in events
 @green_flag {
-    for (local count in 1..100) -- You can also use the range() function, a la Python
+    for (local count in 1..100) { -- You can also use the range() function, a la Python
         local output = ""
         if (count % 3 == 0) { 
           output += "Fizz"
@@ -21,6 +21,6 @@ add Serve from *
 	      local db = create Serve().find()
         Sprite.say(output)    
         db.save(output) -- Saves the output to a database
-}
+	}
 }
 ```
