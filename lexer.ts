@@ -13,6 +13,7 @@ export enum TokenTypeObject {
     From,
     Pack,
     Add,
+    EOF, // End Of File
 }
 
 const reserved: Record<string, TokenTypeObject> = {
