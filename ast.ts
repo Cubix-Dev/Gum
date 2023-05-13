@@ -1,7 +1,8 @@
 // deno-lint-ignore-file no-empty-interface
 export type NodeType = 
     | "Program" 
-    | "NumericLiteral" 
+    | "NumericLiteral"
+    | "NullLiteral" 
     | "Indentifier" 
     | "BinaryExpr";
 
@@ -38,4 +39,9 @@ export interface Indentifier extends Expr {
 export interface NumericLiteral extends Expr {
     kind: "NumericLiteral"
     value: number,
+}
+
+export interface NullLiteral extends Expr {
+    kind: "NullLiteral"
+    value: "null",
 }

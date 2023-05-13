@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import {statement, Program, Expr, BinaryExpr, NumericLiteral, Indentifier} from "./ast.ts"
+import {statement, Program, Expr, BinaryExpr, NumericLiteral, Indentifier, NullLiteral} from "./ast.ts"
 import {tokenize, Token, TokenTypeObject} from "./lexer.ts"
 
 export default class Parser {
@@ -94,6 +94,9 @@ export default class Parser {
     private parse_prim(): Expr {
         const Tk = this.current().type 
         switch (Tk) {
+            case TokenTypeObject.Nil:
+                this.next() //Skip
+                return {kind: "NullLiteral", value: "null"} as NullLiteral
             case TokenTypeObject.Identifier:
                 return {
                     kind: "Indentifier", 
