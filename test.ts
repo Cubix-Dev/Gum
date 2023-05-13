@@ -16,7 +16,7 @@ async function gum() {
   while (true) {
     const input = prompt("> ");
     // Check for no user input or exit keyword.
-    if (!input || input.toLowerCase() == "exit")) {
+    if (!input || input.toLowerCase() == "exit") {
       Deno.exit(1);
     }
 
