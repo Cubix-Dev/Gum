@@ -41,7 +41,7 @@ function isAlpha(blob: string) {
 
 // function for checking if a value is a number
 function isInt(blob: string) {
-    const c = blob.charCodeAt(0) // Get the unicode of the current value. We're only dealing with one character at a time.
+    const c = blob.charCodeAt(0) // Get the unicode of the charBox[0] value. We're only dealing with one character at a time.
     const boundary = ['0'.charCodeAt(0),'9'.charCodeAt(0)]
     return (c >= boundary[0] && c <= boundary[1])
 }
@@ -60,29 +60,28 @@ export function tokenize (src: string): Token[] {
     // Construct token for the whole file
     // TODO: Make this memory effient
     while (charBox.length > 0) {
-        let current = charBox[0]
-        if (current == '(') {
+        if (charBox[0] == '(') {
             tokens.push(makeToken(charBox.shift(), TokenTypeObject.OpenParen))
-        } else if (current == ')') {
+        } else if (charBox[0] == ')') {
             tokens.push(makeToken(charBox.shift(), TokenTypeObject.CloseParen))
-        } else if (current == '*' || current == '+' || current == '-' || current == '/') {
+        } else if (charBox[0] == '*' || charBox[0] == '+' || charBox[0] == '-' || charBox[0] == '/' || charBox[0] == '%') {
             tokens.push(makeToken(charBox.shift(), TokenTypeObject.BinaryOperator))
-        } else if (current == '=') {
+        } else if (charBox[0] == '=') {
             tokens.push(makeToken(charBox.shift(), TokenTypeObject.Equals))
         } else { // It is not a one line character
             // build number token
-            if (isInt(current)) {
+            if (isInt(charBox[0])) {
                 let num = ""
-                while (charBox.length > 0 && isInt(current)) {
+                while (charBox.length > 0 && isInt(charBox[0])) {
                     num += charBox.shift()
                 }
                 tokens.push(makeToken(num, TokenTypeObject.Number))
             }
 
             // build identifer (string) token
-            else if (isAlpha(current)) {
+            else if (isAlpha(charBox[0])) {
                 let letters = ""
-                while (charBox.length > 0 && isAlpha(current)) {
+                while (charBox.length > 0 && isAlpha(charBox[0])) {
                     letters += charBox.shift()
                 }
                 // Check for keyword
@@ -97,7 +96,7 @@ export function tokenize (src: string): Token[] {
             }
 
             // skip escape chars
-            else if (isEscape(current)) {
+            else if (isEscape(charBox[0])) {
                 charBox.shift()
             }
 
@@ -107,5 +106,7 @@ export function tokenize (src: string): Token[] {
             }
         }
     }
+    // add eof character
+    tokens.push(makeToken("EndOfFile",TokenTypeObject.EOF))
     return tokens
 }

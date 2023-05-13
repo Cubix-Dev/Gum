@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-empty-interface
 export type NodeType = 
     | "Program" 
     | "NumericLiteral" 

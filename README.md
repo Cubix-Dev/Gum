@@ -1,5 +1,5 @@
 # Gum
-A simple but flexible programming language for SN-Edit users that want more.
+A simple but flexible programming language for SN-Edit users that want more. Currently on Node but we'll migrate to Bun once that hits v1
 
 ## Example code
 ```
