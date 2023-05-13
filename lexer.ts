@@ -12,6 +12,12 @@ export enum TokenTypeObject {
     Global,
     ConstantLocal,
     ConstantGlobal,
+    
+    // Lists
+    LocalList,
+    GlobalList,
+    ConstantLocalList,
+    ConstantGlobalList,
 
     // Data Types
     Number,
@@ -34,6 +40,10 @@ const reserved: Record<string, TokenTypeObject> = {
     "local!": TokenTypeObject.ConstantLocal,
     "global": TokenTypeObject.Global,
     "global!": TokenTypeObject.ConstantGlobal,
+    "local[]": TokenTypeObject.LocalList,
+    "global[]": TokenTypeObject.GlobalList,
+    "local![]": TokenTypeObject.ConstantLocalList,
+    "global![]": TokenTypeObject.ConstantGlobalList
 }
 
 // defines tokens
@@ -54,6 +64,10 @@ function isAlpha(blob: string) {
     // Add the ability to include ! in the keyword. We'll need it for constant vars
     if (char != true) {
         char = ('!'.charCodeAt(0) == blob.charCodeAt(0))
+
+        // Support including "[" and "]" to recognise arrays.
+        char = ('['.charCodeAt(0) == blob.charCodeAt(0))
+        char = ('['.charCodeAt(0) == blob.charCodeAt(0))
     }
     return char
 }
