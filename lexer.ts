@@ -67,7 +67,7 @@ function isAlpha(blob: string) {
 
         // Support including "[" and "]" to recognise arrays.
         char = ('['.charCodeAt(0) == blob.charCodeAt(0))
-        char = ('['.charCodeAt(0) == blob.charCodeAt(0))
+        char = (']'.charCodeAt(0) == blob.charCodeAt(0))
     }
     return char
 }
