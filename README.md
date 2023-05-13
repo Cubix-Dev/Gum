@@ -2,11 +2,6 @@
 A simple but flexible programming language for SN-Edit users that want more. 
 Currently on Node but we'll migrate to Bun once that hits v1
 
-Progess:
-[x] Lexer (wip)
-[x] Parser (only math is implemented)
-[] Codegen
-
 ## Example code
 ```
 -- Import statements
