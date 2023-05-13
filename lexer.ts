@@ -1,25 +1,39 @@
 
 // We'll add more as we go
 export enum TokenTypeObject {
+    // Math
     BinaryOperator,
     OpenParen,
     CloseParen,
     Equals,
+    
+    //Variables
+    Local,
+    Global,
+    ConstantLocal,
+    ConstantGlobal,
+
+    // Data Types
     Number,
-    VariableDecl,
+    String,
     Identifier,
     Bool,
+
+    // Gum Keywords
     Chew,
     From,
     Pack,
     Add,
-    EOF, // End Of File
+
+    // End Of File
+    EOF, 
 }
 
 const reserved: Record<string, TokenTypeObject> = {
-    "local": TokenTypeObject.VariableDecl,
-    "chew": TokenTypeObject.Chew,
-    "from": TokenTypeObject.From 
+    "local": TokenTypeObject.Local,
+    "local!": TokenTypeObject.ConstantLocal,
+    "global": TokenTypeObject.Global,
+    "global!": TokenTypeObject.ConstantGlobal,
 }
 
 // defines tokens
@@ -36,7 +50,12 @@ function makeToken(value = "", type: TokenTypeObject): Token {
 // function for checking if a value is a letter
 function isAlpha(blob: string) {
     // check if its a letter by attempting to switch the casing
-    return blob.toUpperCase() != blob.toLowerCase()
+    let char = (blob.toUpperCase() != blob.toLowerCase())
+    // Add the ability to include ! in the keyword. We'll need it for constant vars
+    if (char != true) {
+        char = ('!'.charCodeAt(0) == blob.charCodeAt(0))
+    }
+    return char
 }
 
 // function for checking if a value is a number
