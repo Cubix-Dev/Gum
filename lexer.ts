@@ -1,7 +1,7 @@
 
 // We'll add more as we go
 export enum TokenTypeObject {
-    Nil,
+    Null,
     BinaryOperator,
     OpenParen,
     CloseParen,
@@ -18,7 +18,7 @@ export enum TokenTypeObject {
 }
 
 const reserved: Record<string, TokenTypeObject> = {
-    "nil": TokenTypeObject.Nil,
+    "nil": TokenTypeObject.Null,
     "local": TokenTypeObject.VariableDecl,
     "chew": TokenTypeObject.Chew,
     "from": TokenTypeObject.From 
@@ -90,10 +90,10 @@ export function tokenize (src: string): Token[] {
                 const keyword = reserved[letters]
                 // If its not a keyword, let it slide as is
                 if (typeof keyword == "number") {
-                    tokens.push(makeToken(letters, TokenTypeObject.Identifier))
+                    tokens.push(makeToken(letters, keyword))
                 } else {
                     // If it is a keyword, use the keyword's identifier
-                    tokens.push(makeToken(letters, keyword))
+                    tokens.push(makeToken(letters, TokenTypeObject.Identifier))
                 }
             }
 
