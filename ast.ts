@@ -1,6 +1,9 @@
 // deno-lint-ignore-file no-empty-interface
 export type NodeType = 
+    // Statments
     | "Program" 
+
+    // Expressions
     | "NumericLiteral"
     | "Identifier" 
     | "BinaryExpr";
