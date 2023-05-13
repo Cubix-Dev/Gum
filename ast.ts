@@ -2,8 +2,7 @@
 export type NodeType = 
     | "Program" 
     | "NumericLiteral"
-    | "NullLiteral" 
-    | "Indentifier" 
+    | "Identifier" 
     | "BinaryExpr";
 
 // This will not return a value, thats what our expressions are for
@@ -31,17 +30,12 @@ export interface BinaryExpr extends Expr {
     operator: string
 }
 
-export interface Indentifier extends Expr {
-    kind: "Indentifier"
+export interface Identifier extends Expr {
+    kind: "Identifier"
     symbol: string,
 }
 
 export interface NumericLiteral extends Expr {
     kind: "NumericLiteral"
     value: number,
-}
-
-export interface NullLiteral extends Expr {
-    kind: "NullLiteral"
-    value: "null",
 }

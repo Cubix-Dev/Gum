@@ -1,7 +1,6 @@
 
 // We'll add more as we go
 export enum TokenTypeObject {
-    Null,
     BinaryOperator,
     OpenParen,
     CloseParen,
@@ -18,7 +17,6 @@ export enum TokenTypeObject {
 }
 
 const reserved: Record<string, TokenTypeObject> = {
-    "nil": TokenTypeObject.Null,
     "local": TokenTypeObject.VariableDecl,
     "chew": TokenTypeObject.Chew,
     "from": TokenTypeObject.From 
