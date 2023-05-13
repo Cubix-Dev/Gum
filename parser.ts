@@ -94,7 +94,7 @@ export default class Parser {
     private parse_prim(): Expr {
         const Tk = this.current().type 
         switch (Tk) {
-            case TokenTypeObject.Nil:
+            case TokenTypeObject.Null:
                 this.next() //Skip
                 return {kind: "NullLiteral", value: "null"} as NullLiteral
             case TokenTypeObject.Identifier:

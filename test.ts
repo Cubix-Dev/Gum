@@ -1,4 +1,5 @@
 import Parser from "./parser.ts";
+import { interpret } from "./runtime/interpreter.ts";
 
 gum();
 
@@ -17,5 +18,8 @@ function gum() {
     // Produce AST From sourc-code
     const program = parser.newAST(input);
     console.log(program);
+
+    const result = interpret(program)
+    console.log(result)
   }
 }
