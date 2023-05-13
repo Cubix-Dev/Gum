@@ -5,7 +5,7 @@ import { makeNull, makeNumber } from "./runtime/values.ts";
 
 gum();
 
-function gum() {
+async function gum() {
   const parser = new Parser();
   const env = new Environment()
   env.declareVar("x", makeNumber(100))
@@ -20,11 +20,29 @@ function gum() {
       Deno.exit(1);
     }
 
+    if(input?.split(" ")[0] == "run") {
+        const filePath = input?.split(" ")[1];
+
+        const decoder = new TextDecoder("utf8");
+        const readBytes = await Deno.readFile(filePath)
+
+        const file = decoder.decode(readBytes).split("\n");
+        for(const line in file) {
+            runLine(line, parser, env);
+        }
+    } else {
+        runLine(input, parser, env);
+    }
+
+    
+  }
+}
+
+function runLine(input: string, parser: Parser, env: Environment) {
     // Produce AST From sourc-code
     const program = parser.newAST(input);
     console.log(program);
 
     const result = interpret(program, env)
     console.log(result)
-  }
 }
