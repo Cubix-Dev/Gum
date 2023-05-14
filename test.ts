@@ -13,10 +13,14 @@ async function gum() {
 
   // Continue Until User Stops Or Types `exit`
   while (true) {
-    const input = prompt("> ");
+    let input = prompt("> ");
     // Check for no user input or exit keyword.
     if (!input || input.toLowerCase() == "exit") {
       Deno.exit(1);
+    }
+
+    if(input == "test") {
+        input = "run test/test.gum"
     }
 
     if (input?.split(" ")[0] == "run") {
