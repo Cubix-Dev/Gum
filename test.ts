@@ -13,26 +13,34 @@ async function gum() {
 
   // Continue Until User Stops Or Types `exit`
   while (true) {
-    const input = prompt("> ");
+    let input = prompt("> ");
     // Check for no user input or exit keyword.
     if (!input || input.toLowerCase() == "exit") {
       Deno.exit(1);
     }
 
+    if (input == "test") {
+      //* This is absolutely temporary, it just makes testing easier.
+      input = "run test/test.gum";
+    }
+
     if (input?.split(" ")[0] == "run") {
-      const filePath = input?.split(" ")[1];
-
-      const decoder = new TextDecoder("utf8");
-      const readBytes = await Deno.readFile(filePath);
-
-      const file = decoder.decode(readBytes).split("\n");
-      for (const line in file) {
-        runLine(line, parser, env);
-      }
+      const formattedFile = await assembleFile(input);
+      runLine(formattedFile, parser, env);
     } else {
       runLine(input, parser, env);
     }
   }
+}
+
+async function assembleFile(input: string) {
+  // Read and decode the file.
+  const filePath = input?.split(" ")[1];
+
+  const decoder = new TextDecoder("utf8");
+  const readBytes = await Deno.readFile(filePath);
+
+  return decoder.decode(readBytes);
 }
 
 function runLine(input: string, parser: Parser, env: Environment) {
