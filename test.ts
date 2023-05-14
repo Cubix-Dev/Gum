@@ -20,6 +20,7 @@ async function gum() {
     }
 
     if(input == "test") {
+        //* This is absolutely temporary, it just makes testing easier.
         input = "run test/test.gum"
     }
 
