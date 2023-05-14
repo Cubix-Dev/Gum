@@ -91,7 +91,7 @@ function isInt(blob: string) {
 
 // function for checking if a value is a newline character
 function isEscape(blob: string) {
-    return blob == ' ' || blob == '\n' || blob == '\t'
+    return blob == ' ' || blob == '\n' || blob == '\t' || blob == '--'
 }
 
 // Handles Tokenization
