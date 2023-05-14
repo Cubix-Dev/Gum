@@ -1,7 +1,7 @@
 import Parser from "./parser.ts";
 import Environment from "./runtime/env.ts";
 import { interpret } from "./runtime/interpreter.ts";
-import { makeNull, makeNumber } from "./runtime/values.ts";
+import { makeBool, makeNull, makeNumber } from "./runtime/values.ts";
 
 gum();
 
@@ -10,6 +10,8 @@ async function gum() {
   const env = new Environment()
   env.declareVar("x", makeNumber(100),false)
   env.declareVar("nil", makeNull(),true)
+  env.declareVar("true",makeBool(),true)
+  env.declareVar("false",makeBool(false),true)
   console.log("\nGum v0.1");
 
   // Continue Until User Stops Or Types `exit`
