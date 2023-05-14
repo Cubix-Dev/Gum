@@ -1,5 +1,5 @@
 import {NumberVal, runtimeValue} from "./values.ts"
-import { AsssignmentExpr, BinaryExpr, Identifier, NumericLiteral, Program, VariableDecl, statement} from "../ast.ts"
+import { AsssignmentExpr, BinaryExpr, Identifier, NumericLiteral, Program, VariableDecl, statement} from "../lang/ast.ts"
 import Environment from "./env.ts"
 import { evalProgram, evalVarDeclare } from "./eval/statements.ts";
 import { evalAssignment, evalBinop,evalIndent } from "./eval/expressions.ts";

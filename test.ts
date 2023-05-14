@@ -1,4 +1,4 @@
-import Parser from "./parser.ts";
+import Parser from "./lang/parser.ts";
 import Environment, { initGlobalScope } from "./runtime/env.ts";
 import { interpret } from "./runtime/interpreter.ts";
 

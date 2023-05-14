@@ -1,4 +1,4 @@
-import { Program, VariableDecl } from "../../ast.ts";
+import { Program, VariableDecl } from "../../lang/ast.ts";
 import Environment from "../env.ts";
 import { interpret } from "../interpreter.ts";
 import { runtimeValue,makeNull } from "../values.ts";

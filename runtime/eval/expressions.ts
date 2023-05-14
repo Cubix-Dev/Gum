@@ -1,4 +1,4 @@
-import { AsssignmentExpr, BinaryExpr, Identifier } from "../../ast.ts";
+import { AsssignmentExpr, BinaryExpr, Identifier } from "../../lang/ast.ts";
 import Environment from "../env.ts";
 import { interpret } from "../interpreter.ts";
 import { runtimeValue,NumberVal,makeNull } from "../values.ts";
