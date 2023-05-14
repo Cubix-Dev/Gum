@@ -1,6 +1,11 @@
-import { runtimeValue } from "./values.ts"
+import { makeBool, makeNull, makeNumber, runtimeValue } from "./values.ts"
 
-
+export function initGlobalScope (env: Environment) {
+    env.declareVar("x", makeNumber(100),false)
+    env.declareVar("nil", makeNull(),true)
+    env.declareVar("true",makeBool(),true)
+    env.declareVar("false",makeBool(false),true)
+}
 
 export default class Environment {
     private parent?: Environment
@@ -8,6 +13,7 @@ export default class Environment {
     private constants: Set<string>
 
     constructor (parentENV?: Environment) {
+        const global = parentENV ? true : false // TODO: Allow variables to define their scope.
         this.parent = parentENV
         this.variables =  new Map()
         this.constants = new Set()

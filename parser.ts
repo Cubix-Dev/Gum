@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import {statement, Program, Expr, BinaryExpr, NumericLiteral, Identifier} from "./ast.ts"
+import {statement, Program, Expr, BinaryExpr, NumericLiteral, Identifier, AsssignmentExpr} from "./ast.ts"
 import {tokenize, Token, TokenTypeObject} from "./lexer.ts"
 
 export default class Parser {
@@ -75,7 +75,19 @@ export default class Parser {
 
     // Parse expressions
     private parse_expr(): Expr {
-        return this.parse_addit()
+        return this.parse_assignment()
+    }
+
+    private parse_assignment(): Expr {
+        const left = this.parse_addit()
+        if(this.current().type == TokenTypeObject.Equals) {
+            //Advance
+            this.next()
+            const value = this.parse_assignment()
+            return {value, assignee: left, kind: "AssignmentExpr"} as AsssignmentExpr
+        }
+
+        return left
     }
 
     // Addition and Subtraction

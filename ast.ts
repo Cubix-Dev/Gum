@@ -4,6 +4,7 @@ export type NodeType =
     | "Program" 
     | "VariableDecl"
     // Expressions
+    | "AssignmentExpr"
     | "NumericLiteral"
     | "Identifier" 
     | "BinaryExpr";
@@ -49,4 +50,10 @@ export interface Identifier extends Expr {
 export interface NumericLiteral extends Expr {
     kind: "NumericLiteral"
     value: number,
+}
+
+export interface AsssignmentExpr extends Expr {
+    kind: "AssignmentExpr",
+    assignee: Expr, // Support arrays later on
+    value: Expr
 }

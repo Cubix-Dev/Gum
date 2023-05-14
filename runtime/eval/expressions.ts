@@ -1,4 +1,4 @@
-import { BinaryExpr, Identifier } from "../../ast.ts";
+import { AsssignmentExpr, BinaryExpr, Identifier } from "../../ast.ts";
 import Environment from "../env.ts";
 import { interpret } from "../interpreter.ts";
 import { runtimeValue,NumberVal,makeNull } from "../values.ts";
@@ -41,4 +41,12 @@ export function evalBinop (binop: BinaryExpr, env: Environment): runtimeValue {
     } else {
         return makeNull()
     }
+}
+
+export function evalAssignment(node: AsssignmentExpr, env: Environment): runtimeValue {
+    if (node.assignee.kind !== "Identifier") {
+        throw 'Gum can not assign a value that is not an Indentifier'
+    }
+    const varName = (node.assignee as Identifier).symbol
+    return env.assignVar(varName, interpret(node.value, env))
 }

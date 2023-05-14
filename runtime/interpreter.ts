@@ -1,8 +1,8 @@
 import {NumberVal, runtimeValue} from "./values.ts"
-import { BinaryExpr, Identifier, NumericLiteral, Program, VariableDecl, statement} from "../ast.ts"
+import { AsssignmentExpr, BinaryExpr, Identifier, NumericLiteral, Program, VariableDecl, statement} from "../ast.ts"
 import Environment from "./env.ts"
 import { evalProgram, evalVarDeclare } from "./eval/statements.ts";
-import { evalBinop,evalIndent } from "./eval/expressions.ts";
+import { evalAssignment, evalBinop,evalIndent } from "./eval/expressions.ts";
 
 
 // Evaluate the actual code
@@ -22,6 +22,9 @@ export function interpret (ast: statement, env: Environment): runtimeValue {
         
         case "Identifier":
             return evalIndent(ast as Identifier, env)
+
+        case "AssignmentExpr":
+            return evalAssignment(ast as AsssignmentExpr, env)
         case "VariableDecl":
             return evalVarDeclare(ast as VariableDecl, env)
         default:

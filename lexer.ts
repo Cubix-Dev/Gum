@@ -6,6 +6,16 @@ export enum TokenTypeObject {
     OpenParen,
     CloseParen,
     Equals,
+
+    // Other Characters
+    Comma,
+    Colon,
+    At,
+    Tag,
+    OpenBracket,
+    CloseBracket,
+    OpenBrace,
+    CloseBrace,
     
     //Variables
     Local,
@@ -65,9 +75,9 @@ function isAlpha(blob: string) {
     if (char != true) {
         char = ('!'.charCodeAt(0) == blob.charCodeAt(0))
 
-        // Support including "[" and "]" to recognise arrays.
-        char = ('['.charCodeAt(0) == blob.charCodeAt(0))
-        char = (']'.charCodeAt(0) == blob.charCodeAt(0))
+        // TODO: Support including "[" and "]" to recognise arrays. (This was not implemented correctly)
+        // char = ('['.charCodeAt(0) == blob.charCodeAt(0))
+        // char = (']'.charCodeAt(0) == blob.charCodeAt(0))
     }
     return char
 }
@@ -97,10 +107,26 @@ export function tokenize (src: string): Token[] {
             tokens.push(makeToken(charBox.shift(), TokenTypeObject.OpenParen))
         } else if (charBox[0] == ')') {
             tokens.push(makeToken(charBox.shift(), TokenTypeObject.CloseParen))
+        } else if (charBox[0] == '[') {
+            tokens.push(makeToken(charBox.shift(), TokenTypeObject.OpenBracket))
+        } else if (charBox[0] == ']') {
+            tokens.push(makeToken(charBox.shift(), TokenTypeObject.CloseBracket))
+        } else if (charBox[0] == '{') {
+            tokens.push(makeToken(charBox.shift(), TokenTypeObject.OpenBrace))
+        } else if (charBox[0] == '}') {
+            tokens.push(makeToken(charBox.shift(), TokenTypeObject.CloseBrace))
         } else if (charBox[0] == '*' || charBox[0] == '+' || charBox[0] == '-' || charBox[0] == '/' || charBox[0] == '%') {
             tokens.push(makeToken(charBox.shift(), TokenTypeObject.BinaryOperator))
         } else if (charBox[0] == '=') {
             tokens.push(makeToken(charBox.shift(), TokenTypeObject.Equals))
+        } else if (charBox[0] == '@') {
+            tokens.push(makeToken(charBox.shift(), TokenTypeObject.At))
+        } else if (charBox[0] == ',') {
+            tokens.push(makeToken(charBox.shift(), TokenTypeObject.Comma))
+        } else if (charBox[0] == ':') {
+            tokens.push(makeToken(charBox.shift(), TokenTypeObject.Colon))
+        } else if (charBox[0] == '#') {
+            tokens.push(makeToken(charBox.shift(), TokenTypeObject.Tag))
         } else { // It is not a one line character
             // build number token
             if (isInt(charBox[0])) {
