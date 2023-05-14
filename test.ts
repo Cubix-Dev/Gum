@@ -19,9 +19,9 @@ async function gum() {
       Deno.exit(1);
     }
 
-    if(input == "test") {
-        //* This is absolutely temporary, it just makes testing easier.
-        input = "run test/test.gum"
+    if (input == "test") {
+      //* This is absolutely temporary, it just makes testing easier.
+      input = "run test/test.gum";
     }
 
     if (input?.split(" ")[0] == "run") {
@@ -40,9 +40,7 @@ async function assembleFile(input: string) {
   const decoder = new TextDecoder("utf8");
   const readBytes = await Deno.readFile(filePath);
 
-  const file = decoder.decode(readBytes);
-  return file;
-  // TODO:
+  return decoder.decode(readBytes);
 }
 
 function runLine(input: string, parser: Parser, env: Environment) {
