@@ -20,19 +20,24 @@ async function gum() {
     }
 
     if (input?.split(" ")[0] == "run") {
-      const filePath = input?.split(" ")[1];
-
-      const decoder = new TextDecoder("utf8");
-      const readBytes = await Deno.readFile(filePath);
-
-      const file = decoder.decode(readBytes).split("\n");
-      for (const line in file) {
-        runLine(line, parser, env);
-      }
+        const formattedFile = await assembleFile(input);
+        runLine(formattedFile, parser, env)
     } else {
       runLine(input, parser, env);
     }
   }
+}
+
+async function assembleFile(input: string) { 
+    // Read and decode the file.
+  const filePath = input?.split(" ")[1];
+
+  const decoder = new TextDecoder("utf8");
+  const readBytes = await Deno.readFile(filePath);
+
+  const file = decoder.decode(readBytes)
+  return file
+  // TODO: 
 }
 
 function runLine(input: string, parser: Parser, env: Environment) {

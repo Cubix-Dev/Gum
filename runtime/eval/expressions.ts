@@ -27,6 +27,9 @@ function evalNumericExpression(
       break;
     case "/":
       // TODO: Check for division by 0
+      if (r.value === 0) {
+        throw "Cannot divide by 0.";
+      }
       result = l.value / r.value;
       break;
     case "%":
