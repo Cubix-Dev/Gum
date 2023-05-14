@@ -2,7 +2,7 @@
 export type NodeType = 
     // Statments
     | "Program" 
-
+    | "VariableDecl"
     // Expressions
     | "NumericLiteral"
     | "Identifier" 
@@ -17,6 +17,14 @@ export interface statement {
 export interface Program extends statement {
     kind: "Program"
     body: statement[]
+}
+
+// Variables
+export interface VariableDecl extends statement {
+    kind: "VariableDecl",
+    id: string,
+    value: Expr // value can't be undefined
+    mutable: boolean,
 }
 
 // This is for stuff that will return values. If it doesn't return a value its a statment

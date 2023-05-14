@@ -5,19 +5,25 @@ import { runtimeValue } from "./values.ts"
 export default class Environment {
     private parent?: Environment
     private variables: Map<string, runtimeValue>
+    private constants: Set<string>
 
     constructor (parentENV?: Environment) {
         this.parent = parentENV
         this.variables =  new Map()
+        this.constants = new Set()
     }
 
 
-    public declareVar (varName: string, value: runtimeValue): runtimeValue {
+    public declareVar (varName: string, value: runtimeValue, mutable: boolean): runtimeValue {
         if (this.variables.has(varName)) {
             throw 'Gum is unable to declare variable ${varName} as it already exists.';
         }
 
         this.variables.set(varName, value)
+
+        if (!mutable){
+            this.constants.add(varName)
+        }
         return value
     }
 
@@ -35,9 +41,11 @@ export default class Environment {
 
     public assignVar (varName: string, newVal: runtimeValue): runtimeValue {
         const env = this.resolve(varName)
-        if (env) {
+        if (env && !env.constants.has(varName)) {
             env.variables.set(varName, newVal)
             return newVal
+        } if (env.constants.has(varName)){
+            throw 'Gum is unabled to assign a value to an immutable variable'
         } else {
             throw 'Gum is unable to assign a value to variable ${varName} as it is undefined.';
         }

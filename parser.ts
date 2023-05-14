@@ -49,9 +49,28 @@ export default class Parser {
     }
 
     private parse_statement(): statement {
-        // this is a surprise tool that will help us later
-        // skip to parse expression
-        return this.parse_expr()
+        // Look! The secret tool is being used!
+        switch (this.current().type) {
+            case TokenTypeObject.ConstantLocal:
+            case TokenTypeObject.Local:
+                return this.parse_variabledecl()    
+            default:
+                return this.parse_expr()
+        }
+    }
+
+    private parse_variabledecl(): statement {
+        const isImmutable = (this.next().type != TokenTypeObject.ConstantLocal)
+        const name = this.depend(TokenTypeObject.Identifier, "Expected Identifer after variable declaration.").value
+        // Variables must provide a value
+        /* basically this is doable
+            local v = 1
+            but not this
+            local v
+        */
+        this.depend(TokenTypeObject.Equals, 'Variables can not be undefined. They must be initialized. You can defined an undefined variable with an empty string.')
+        const definition = {kind: "VariableDecl",id: name, value: this.parse_expr(), mutable: isImmutable}
+        return definition as statement
     }
 
     // Parse expressions

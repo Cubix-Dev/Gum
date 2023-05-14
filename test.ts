@@ -8,8 +8,8 @@ gum();
 async function gum() {
   const parser = new Parser();
   const env = new Environment()
-  env.declareVar("x", makeNumber(100))
-  env.declareVar("nil", makeNull())
+  env.declareVar("x", makeNumber(100),false)
+  env.declareVar("nil", makeNull(),true)
   console.log("\nGum v0.1");
 
   // Continue Until User Stops Or Types `exit`
