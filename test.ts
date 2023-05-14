@@ -6,9 +6,9 @@ gum();
 
 async function gum() {
   const parser = new Parser();
-  const env = new Environment()
-  initGlobalScope(env)
-  
+  const env = new Environment();
+  initGlobalScope(env);
+
   console.log("\nGum v0.1");
 
   // Continue Until User Stops Or Types `exit`
@@ -19,29 +19,27 @@ async function gum() {
       Deno.exit(1);
     }
 
-    if(input?.split(" ")[0] == "run") {
-        const filePath = input?.split(" ")[1];
+    if (input?.split(" ")[0] == "run") {
+      const filePath = input?.split(" ")[1];
 
-        const decoder = new TextDecoder("utf8");
-        const readBytes = await Deno.readFile(filePath)
+      const decoder = new TextDecoder("utf8");
+      const readBytes = await Deno.readFile(filePath);
 
-        const file = decoder.decode(readBytes).split("\n");
-        for(const line in file) {
-            runLine(line, parser, env);
-        }
+      const file = decoder.decode(readBytes).split("\n");
+      for (const line in file) {
+        runLine(line, parser, env);
+      }
     } else {
-        runLine(input, parser, env);
+      runLine(input, parser, env);
     }
-
-    
   }
 }
 
 function runLine(input: string, parser: Parser, env: Environment) {
-    // Produce AST From sourc-code
-    const program = parser.newAST(input);
-    console.log(program);
+  // Produce AST From sourc-code
+  const program = parser.newAST(input);
+  console.log(program);
 
-    const result = interpret(program, env)
-    console.log(result)
+  const result = interpret(program, env);
+  console.log(result);
 }
