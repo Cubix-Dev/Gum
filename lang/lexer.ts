@@ -145,11 +145,11 @@ export function tokenize (src: string): Token[] {
                 }
                 // Check for keyword
                 const keyword = reserved[letters]
-                // If its not a keyword, let it slide as is
+                // If it is a keyword, use the keyword's identifier
                 if (typeof keyword == "number") {
                     tokens.push(makeToken(letters, keyword))
                 } else {
-                    // If it is a keyword, use the keyword's identifier
+                    // If its not a keyword, let it slide as is
                     tokens.push(makeToken(letters, TokenTypeObject.Identifier))
                 }
             }
