@@ -5,6 +5,9 @@ export type NodeType =
   | "VariableDecl"
   // Expressions
   | "AssignmentExpr"
+  // Literals
+  | "Property"
+  | "ObjectLiteral"
   | "NumericLiteral"
   | "Identifier"
   | "BinaryExpr";
@@ -56,4 +59,15 @@ export interface AsssignmentExpr extends Expr {
   kind: "AssignmentExpr";
   assignee: Expr; // Support arrays later on
   value: Expr;
+}
+
+export interface Property extends Expr {
+  kind: "Property"
+  key: string
+  value?: Expr
+}
+
+export interface ObjectLiteral extends Expr {
+  kind: "ObjectLiteral";
+  properies:  Property[]
 }

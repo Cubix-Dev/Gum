@@ -63,3 +63,7 @@ export function evalAssignment(
   const varName = (node.assignee as Identifier).symbol;
   return env.assignVar(varName, interpret(node.value, env));
 }
+
+export function evalObj(obj: ObjectLiteral, env: Environment): runtimeValue {
+
+}

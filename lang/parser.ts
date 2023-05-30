@@ -103,10 +103,10 @@ export default class Parser {
   // Parse expressions
   private parse_expr(): Expr {
     return this.parse_assignment();
-  }
+  } 
 
   private parse_assignment(): Expr {
-    const left = this.parse_addit();
+    const left = this.parse_obj();
     if (this.current().type == TokenTypeObject.Equals) {
       //Advance
       this.next();
@@ -119,6 +119,39 @@ export default class Parser {
     }
 
     return left;
+  }
+
+  private parse_obj(): Expr {
+    if (this.current !== TokenTypeObject.OpenBracket) {
+      return this.parse_addit()
+    }
+    this.next() //Advance
+    const props = new Array<Property>();
+
+    while (this.EoF() && this.current().type !== TokenTypeObject.CloseBracket) {
+      const key = this.depend(TokenTypeObject.Identifer, "Object Literal Key Required.")
+      // {key,} pair
+      if (this.current == TokenTypeObject.Comma) {
+        this.next() //Skip the comma
+        props.push({key, kind: "Property", value: undefined} as Property)
+        continue
+      } else 
+      // {key}
+      if (this.current == TokenTypeObject.CloseBracket) {
+        props.push({key, kind: "Property", value: undefined} as Property)
+        continue
+      }
+      // {key: val}
+      this.depend(TokenTypeObject.Colon, "Missing Colon.")
+      const valve = this.parse_expr()
+      props.push( {kind: "Property", valve, key} )
+      if (this.current != TokenTypeObject.CloseBracket) {
+        this.depend(TokenTypeObject.Comma,"Missing Comma or eol.")
+      }
+    }
+
+    this.depend(TokenTypeObject.CloseBracket,"Close Brackets when opening them.")
+    return { kind: "ObjectLiteral", props} as ObjectLiteral
   }
 
   // Addition and Subtraction
