@@ -1,10 +1,13 @@
-import { makeBool, makeNull, makeNumber, runtimeValue } from "./values.ts";
+import { makeBool, makeNative, makeNull, makeNumber, runtimeValue } from "./values.ts";
 
 export function initGlobalScope(env: Environment) {
   env.declareVar("x", makeNumber(100), false);
   env.declareVar("nil", makeNull(), true);
   env.declareVar("true", makeBool(), true);
   env.declareVar("false", makeBool(false), true);
+  
+  // Defualt Methods
+  env.declareVar("print", makeNative((args, scope) => {console.log(...args); return makeNull()}),true) //visit Natives.ts
 }
 
 export default class Environment {

@@ -11,6 +11,7 @@ export enum TokenTypeObject {
   Colon,
   At,
   Tag,
+  Dot,
   OpenBracket,
   CloseBracket,
   OpenBrace,
@@ -129,7 +130,9 @@ export function tokenize(src: string): Token[] {
       tokens.push(makeToken(charBox.shift(), TokenTypeObject.Colon));
     } else if (charBox[0] == "#") {
       tokens.push(makeToken(charBox.shift(), TokenTypeObject.Tag));
-    } else { // It is not a one line character
+    } else if (charBox[0] == ".") {
+      tokens.push(makeToken(charBox.shift(), TokenTypeObject.Dot));
+    }  else { // It is not a one line character
       // build number token
       if (isInt(charBox[0])) {
         let num = "";

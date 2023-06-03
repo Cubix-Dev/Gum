@@ -1,7 +1,7 @@
-import { AsssignmentExpr, BinaryExpr, Identifier, ObjectLiteral } from "../../lang/ast.ts";
+import { AsssignmentExpr, BinaryExpr, CallExpr, Identifier, ObjectLiteral } from "../../lang/ast.ts";
 import Environment from "../env.ts";
 import { interpret } from "../interpreter.ts";
-import { makeNull, NumberVal, ObjectVal, runtimeValue } from "../values.ts";
+import { makeNull, NativeFunction, NumberVal, ObjectVal, runtimeValue } from "../values.ts";
 
 export function evalIndent(ident: Identifier, env: Environment): runtimeValue {
   const val = env.lookup(ident.symbol);
@@ -73,4 +73,18 @@ export function evalAssignment(
   }
   const varName = (node.assignee as Identifier).symbol;
   return env.assignVar(varName, interpret(node.value, env));
+}
+
+export function evalCall(expr: CallExpr, env: Environment): runtimeValue {
+  const args = expr.args.map((arg) => interpret(arg,env))
+  const fn = interpret(expr.caller,env)
+
+  // console.log(fn.type, "native-fn" == fn.type)
+  if (fn.type !== "native-fn") {
+    throw 'Invalid Call Type ' + JSON.stringify(fn)
+  }
+
+  const res = (fn as NativeFunction).call(args,env)
+
+  return res
 }

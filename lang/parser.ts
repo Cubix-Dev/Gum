@@ -2,8 +2,10 @@
 import {
   AsssignmentExpr,
   BinaryExpr,
+  CallExpr,
   Expr,
   Identifier,
+  MemberExpr,
   NumericLiteral,
   ObjectLiteral,
   Program,
@@ -180,13 +182,13 @@ export default class Parser {
   // Mulitiplication and Division
   // Higher priority so its handled lower
   private parse_multiplicative(): Expr {
-    let left = this.parse_prim();
+    let left = this.parse_callmember();
     while (
       this.current().value == "*" || this.current().value == "/" ||
       this.current().value == "%"
     ) {
       const operator = this.next().value;
-      const right = this.parse_prim();
+      const right = this.parse_callmember();
       left = {
         kind: "BinaryExpr",
         left,
@@ -196,6 +198,71 @@ export default class Parser {
     }
 
     return left;
+  }
+
+  private parse_callmember(): Expr {
+    const member = this.parse_members()
+
+    if (this.current().type == TokenTypeObject.OpenParen) {
+      return this.parse_calls(member)
+    }
+
+    return member
+  }
+
+  private parse_calls(caller: Expr): Expr {
+    let callExpr: Expr = {kind: "CallExpr", args: this.parse_args(), caller} as CallExpr
+
+    if ( this.current().type == TokenTypeObject.OpenParen) {
+      callExpr = this.parse_calls(callExpr)
+    }
+
+    return callExpr
+  }
+
+  private parse_args(): Expr[] {
+    this.depend(TokenTypeObject.OpenParen,"If you see this, something is wrong.")
+    const args = this.current().type == TokenTypeObject.CloseParen ? [] : this.parse_args_list()
+    this.depend(TokenTypeObject.CloseParen, "Closing Parenthesis is missing.")
+    return args
+  }
+
+  private parse_args_list(): Expr[] {
+    const args = [this.parse_expr()]
+
+    while (this.EoF() && this.current().type == TokenTypeObject.Comma && this.next()) {
+      args.push(this.parse_assignment())
+    }
+
+    return args
+  }
+
+  private parse_members(): Expr {
+    let object = this.parse_prim()
+
+    while (this.current().type == TokenTypeObject.Dot || this.current().type == TokenTypeObject.OpenBrace) {
+      const operand = this.next()
+      let property : Expr
+      let computed: boolean
+
+      // Non computed
+      if (operand.type == TokenTypeObject.Dot) {
+        computed = false
+        property = this.parse_prim()
+        if (property.kind != "Identifier") {
+          throw 'Attempted to use a dot operator without a succeeding indentifier'
+        }
+      } 
+      // Computed
+      else {
+        computed = true
+        property = this.parse_expr()
+        this.depend(TokenTypeObject.CloseBrace, "Missing Closing Brace.")
+      }
+      object = {kind: "MemberExpr",object,property,computed} as MemberExpr
+    }
+
+    return object
   }
 
   private parse_prim(): Expr {

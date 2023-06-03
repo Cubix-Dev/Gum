@@ -2,6 +2,8 @@ import Parser from "./lang/parser.ts";
 import Environment, { initGlobalScope } from "./runtime/env.ts";
 import { interpret } from "./runtime/interpreter.ts";
 
+const debug = false
+
 gum();
 
 async function gum() {
@@ -44,10 +46,12 @@ async function assembleFile(input: string) {
 }
 
 function runLine(input: string, parser: Parser, env: Environment) {
-  // Produce AST From sourc-code
-  const program = parser.newAST(input);
-  console.log(program);
+  // Produce AST From source-code if debug is enabled
+  if (debug) {
+    const program = parser.newAST(input);
+    console.log(program);
 
-  const result = interpret(program, env);
-  console.log(result);
+    const result = interpret(program, env);
+    console.log(result);
+  }
 }

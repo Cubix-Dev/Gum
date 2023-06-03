@@ -1,4 +1,6 @@
-export type ValueType = "null" | "number" | "boolean" | "object";
+import Environment from "./env.ts";
+
+export type ValueType = "null" | "number" | "boolean" | "object" | "native-fn";
 
 export interface runtimeValue {
   type: ValueType;
@@ -35,4 +37,15 @@ export function makeNull() {
 
 export function makeBool(b = true) {
   return { type: "boolean", value: b } as BoolVal;
+}
+
+export type FunctionCall = (args: runtimeValue[], env: Environment) => runtimeValue
+
+export interface NativeFunction extends runtimeValue {
+  type: "native-fn"
+  call: FunctionCall
+}
+
+export function makeNative(call: FunctionCall) {
+  return { type: "native-fn", call } as NativeFunction;
 }
