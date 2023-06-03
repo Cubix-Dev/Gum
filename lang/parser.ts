@@ -5,7 +5,9 @@ import {
   Expr,
   Identifier,
   NumericLiteral,
+  ObjectLiteral,
   Program,
+  Property,
   statement,
 } from "./ast.ts";
 import { Token, tokenize, TokenTypeObject } from "./lexer.ts";
@@ -122,36 +124,39 @@ export default class Parser {
   }
 
   private parse_obj(): Expr {
-    if (this.current !== TokenTypeObject.OpenBracket) {
-      return this.parse_addit()
-    }
-    this.next() //Advance
-    const props = new Array<Property>();
-
-    while (this.EoF() && this.current().type !== TokenTypeObject.CloseBracket) {
-      const key = this.depend(TokenTypeObject.Identifer, "Object Literal Key Required.")
-      // {key,} pair
-      if (this.current == TokenTypeObject.Comma) {
-        this.next() //Skip the comma
-        props.push({key, kind: "Property", value: undefined} as Property)
-        continue
-      } else 
-      // {key}
-      if (this.current == TokenTypeObject.CloseBracket) {
-        props.push({key, kind: "Property", value: undefined} as Property)
-        continue
+      if (this.current().type !== TokenTypeObject.OpenBracket) {
+        return this.parse_addit()
       }
-      // {key: val}
-      this.depend(TokenTypeObject.Colon, "Missing Colon.")
-      const valve = this.parse_expr()
-      props.push( {kind: "Property", valve, key} )
-      if (this.current != TokenTypeObject.CloseBracket) {
-        this.depend(TokenTypeObject.Comma,"Missing Comma or eol.")
-      }
-    }
 
-    this.depend(TokenTypeObject.CloseBracket,"Close Brackets when opening them.")
-    return { kind: "ObjectLiteral", props} as ObjectLiteral
+      this.next() //Advance past the open bracket
+      const properies = new Array<Property>();
+      while (this.EoF() && this.current().type != TokenTypeObject.CloseBracket) {
+        const key = this.depend(TokenTypeObject.Identifier, "Literal Key expected").value
+
+        //Undefined keys {key,}
+        if (this.current().type == TokenTypeObject.Comma) {
+          this.next() //Skip the comma
+          properies.push({key, kind: "Property"} as Property)
+          continue
+        } 
+        // Undefined keys with no commas {key}
+        else if (this.current().type == TokenTypeObject.CloseBracket) {
+          properies.push({key, kind: "Property"} as Property)
+          continue
+        }
+
+        // Defined keys
+        this.depend(TokenTypeObject.Colon, "No Defintion Found.")
+        const value = this.parse_expr();
+        properies.push({ kind: "Property", value, key });
+        if (this.current().type !== TokenTypeObject.CloseBracket) {
+          // Expect a comma
+          this.depend(TokenTypeObject.Comma,"Expected either a comma or a closing bracket.")
+        }
+      }
+
+      this.depend(TokenTypeObject.CloseBracket, "Object Definetion is incomplete.")
+      return {kind: "ObjectLiteral", properies } as ObjectLiteral
   }
 
   // Addition and Subtraction

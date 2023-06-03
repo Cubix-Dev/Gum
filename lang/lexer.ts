@@ -107,13 +107,13 @@ export function tokenize(src: string): Token[] {
     } else if (charBox[0] == ")") {
       tokens.push(makeToken(charBox.shift(), TokenTypeObject.CloseParen));
     } else if (charBox[0] == "[") {
-      tokens.push(makeToken(charBox.shift(), TokenTypeObject.OpenBracket));
-    } else if (charBox[0] == "]") {
-      tokens.push(makeToken(charBox.shift(), TokenTypeObject.CloseBracket));
-    } else if (charBox[0] == "{") {
       tokens.push(makeToken(charBox.shift(), TokenTypeObject.OpenBrace));
-    } else if (charBox[0] == "}") {
+    } else if (charBox[0] == "]") {
       tokens.push(makeToken(charBox.shift(), TokenTypeObject.CloseBrace));
+    } else if (charBox[0] == "{") {
+      tokens.push(makeToken(charBox.shift(), TokenTypeObject.OpenBracket));
+    } else if (charBox[0] == "}") {
+      tokens.push(makeToken(charBox.shift(), TokenTypeObject.CloseBracket));
     } else if (
       charBox[0] == "*" || charBox[0] == "+" || charBox[0] == "-" ||
       charBox[0] == "/" || charBox[0] == "%"

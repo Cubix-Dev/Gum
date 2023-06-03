@@ -1,7 +1,7 @@
-import { AsssignmentExpr, BinaryExpr, Identifier } from "../../lang/ast.ts";
+import { AsssignmentExpr, BinaryExpr, Identifier, ObjectLiteral } from "../../lang/ast.ts";
 import Environment from "../env.ts";
 import { interpret } from "../interpreter.ts";
-import { makeNull, NumberVal, runtimeValue } from "../values.ts";
+import { makeNull, NumberVal, ObjectVal, runtimeValue } from "../values.ts";
 
 export function evalIndent(ident: Identifier, env: Environment): runtimeValue {
   const val = env.lookup(ident.symbol);
@@ -53,6 +53,17 @@ export function evalBinop(binop: BinaryExpr, env: Environment): runtimeValue {
   }
 }
 
+export function evalObj(obj: ObjectLiteral, env: Environment): runtimeValue {
+  const object = { type: "object", properties: new Map()} as ObjectVal
+  for (const {key, value} of obj.properies) {
+    // when short handed we're expecting the value to have alr been defined. If not short handed we're expecting an expression
+    const runtimeVal = (value == undefined) ? env.lookup(key) : interpret(value, env)
+    object.properties.set(key, runtimeVal)
+  }
+
+  return object
+}
+
 export function evalAssignment(
   node: AsssignmentExpr,
   env: Environment,
@@ -62,8 +73,4 @@ export function evalAssignment(
   }
   const varName = (node.assignee as Identifier).symbol;
   return env.assignVar(varName, interpret(node.value, env));
-}
-
-export function evalObj(obj: ObjectLiteral, env: Environment): runtimeValue {
-
 }
