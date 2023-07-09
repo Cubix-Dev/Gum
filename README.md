@@ -1,9 +1,8 @@
 # Gum
 
 A simple but flexible programming language for SN-Edit users that want more.
-Currently on Node but we'll migrate to Bun once that hits v1
+Now with Rust!
 
-Currently no longer being worked on. Its archieved as we may come back to this in the future?
 
 ## Example code
 
