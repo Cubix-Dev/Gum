@@ -33,6 +33,7 @@ fn get_keywords_hashmap() -> HashMap<&'static str, TokenType> {
         ("false", False),
         ("true", True),
         ("nil", Nil),
+        ("null", Nil),
         ("not", Not),
         ("kick", Kick),
         ("self", Me),
