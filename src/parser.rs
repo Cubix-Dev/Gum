@@ -300,6 +300,7 @@ impl Parser {
     fn print_statement(&mut self) -> Result<Stmt, String> {
         let value = self.expression()?;
         self.consume(Semicolon, "Expected ';' after value.")?;
+        self.consume(Nil, "Expected value.")?;
         Ok(Stmt::Print { expression: value })
     }
 
