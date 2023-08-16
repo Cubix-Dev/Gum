@@ -108,3 +108,9 @@ fn main() {
         exit(64);
     }
 }
+
+
+//this is if you were able to load gum in the new snEdit
+fn snedit() {
+    println!("Welcome to the Gum debugger! You are using version: {}.", env!("CARGO_PKG_VERSION"));
+}
